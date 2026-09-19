@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { MAX_CODE_CHARS, type Language } from '@code-optimizer/shared';
 import CodeInput from './components/CodeInput';
+import DiffView from './components/DiffView';
 import ErrorBanner from './components/ErrorBanner';
 import LanguageSelect from './components/LanguageSelect';
 import OptimizeButton from './components/OptimizeButton';
@@ -48,7 +49,7 @@ export default function App() {
           />
         </div>
 
-        {result && <pre className="overflow-auto rounded-lg border border-edge bg-panel p-4 text-xs text-slate-300">{JSON.stringify(result, null, 2)}</pre>}
+        {result && <DiffView original={code} optimized={result.optimized_code} language={language} />}
       </main>
     </div>
   );

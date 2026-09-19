@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { MAX_CODE_CHARS, type Language } from '@code-optimizer/shared';
 import CodeInput from './components/CodeInput';
 import ResultsPanel from './components/ResultsPanel';
+import ResultActions from './components/ResultActions';
 import ErrorBanner from './components/ErrorBanner';
 import LanguageSelect from './components/LanguageSelect';
 import OptimizeButton from './components/OptimizeButton';
@@ -49,7 +50,7 @@ export default function App() {
           />
         </div>
 
-        {result && <ResultsPanel result={result} original={code} language={language} actions={null} />}
+        {result && <ResultsPanel result={result} original={code} language={language} actions={<ResultActions code={result.optimized_code} language={language} />} />}
       </main>
     </div>
   );

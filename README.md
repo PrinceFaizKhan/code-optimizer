@@ -4,6 +4,8 @@ Paste code, pick a language, and get back an optimized version plus a structured
 
 Supports PHP, JavaScript, TypeScript, Python, SQL, and Laravel Blade.
 
+**Repository:** https://github.com/PrinceFaizKhan/code-optimizer
+
 ## Requirements
 
 - Node.js 22.12 or newer (Node.js 20.19+ in the 20.x series also works with the installed Vite version)
@@ -11,14 +13,14 @@ Supports PHP, JavaScript, TypeScript, Python, SQL, and Laravel Blade.
 
 ## Run the app yourself
 
-If setup is already done, open Terminal and run:
+If setup is already done, open Terminal, go to the project folder, and run:
 
 ```bash
-cd /Users/faizankhan/Desktop/code-optimizer
+cd code-optimizer
 npm run dev
 ```
 
-This is the current project location on this Mac. Use the new folder path if you move the project.
+Replace `code-optimizer` with wherever you keep the project if it is not in the current directory.
 
 Wait for both the Vite URL and `API listening` message, then open **http://127.0.0.1:5173/** in your browser. Use this exact address for the frontend; port 3001 is the backend API.
 
@@ -28,10 +30,23 @@ The single command starts both servers. Keep that Terminal window running while 
 
 Skip this section if dependencies and `backend/.env` are already configured.
 
+### Getting the code
+
+If you already have the project on this machine, skip to step 1. To set it up fresh, clone it:
+
+```bash
+git clone https://github.com/PrinceFaizKhan/code-optimizer.git
+cd code-optimizer
+```
+
+Then follow the steps below from inside that folder.
+
+`backend/.env` is deliberately **not** in the repository, so a fresh clone has no API key. Step 3 creates it. This is why cloning alone is not enough to run the app.
+
 1. Open Terminal in the project folder and check Node.js and npm:
 
    ```bash
-   cd /Users/faizankhan/Desktop/code-optimizer
+   cd code-optimizer
    node --version
    npm --version
    ```
@@ -69,6 +84,8 @@ Expected response: `{"status":"ok"}`. This checks the frontend proxy and backend
 ## Configuration
 
 All configuration lives in `backend/.env`. Only `.env.example` is committed; your key never reaches the frontend bundle or an HTTP response.
+
+> **Never commit your API key.** `.gitignore` covers `.env*` (with `.env.example` excepted), so every `.env` variant stays out of the repository — including copies like `.env 2` that an editor or Finder can create. Before pushing, a quick `git status` should never show a file containing your key. If one is ever committed, treat the key as leaked: revoke it at https://console.claude.com/settings/keys and issue a new one.
 
 | Variable | Required | Default | Purpose |
 |---|---|---|---|

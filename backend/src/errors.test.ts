@@ -4,6 +4,13 @@ import { mapError } from './errors';
 import { RefusalError, UnreadableResponseError } from './services/claude';
 
 describe('mapError', () => {
+  it('maps a request timeout to 504 with an actionable message', () => {
+    expect(mapError(new Anthropic.APIConnectionTimeoutError())).toEqual({
+      status: 504,
+      message: 'The AI took too long to respond. Try a smaller piece of code.',
+    });
+  });
+
   it('maps an unreadable response to 502', () => {
     expect(mapError(new UnreadableResponseError('stop_reason: max_tokens'))).toEqual({
       status: 502,

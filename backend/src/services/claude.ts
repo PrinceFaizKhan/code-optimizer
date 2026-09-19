@@ -4,6 +4,10 @@ import { OptimizationResultSchema, type Language, type OptimizationResult } from
 import type { AppConfig } from '../config';
 import { buildSystemPrompt, buildUserMessage } from '../prompt';
 
+// Finish before the browser/proxy's 180-second deadline. An explicit timeout
+// also allows the SDK to send our 32k-token non-streaming request.
+const REQUEST_TIMEOUT_MS = 170_000;
+
 /** The model produced no schema-valid payload. */
 export class UnreadableResponseError extends Error {
   constructor(reason: string) {
@@ -41,7 +45,7 @@ export function createCodeOptimizer(
             format: zodOutputFormat(OptimizationResultSchema),
             effort: 'high',
           },
-        });
+        }, { timeout: REQUEST_TIMEOUT_MS, maxRetries: 0 });
       } catch (error) {
         // The SDK throws (rather than returning a null `parsed_output`) when the
         // model's response violates the Zod schema. That failure is an

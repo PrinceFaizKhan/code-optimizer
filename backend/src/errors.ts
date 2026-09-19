@@ -17,6 +17,9 @@ export function mapError(error: unknown): MappedError {
   if (error instanceof RefusalError) {
     return { status: 502, message: 'The AI declined to process this code.' };
   }
+  if (error instanceof Anthropic.APIConnectionTimeoutError) {
+    return { status: 504, message: 'The AI took too long to respond. Try a smaller piece of code.' };
+  }
   if (error instanceof Anthropic.AuthenticationError) {
     return { status: 500, message: 'The server is not configured correctly.' };
   }

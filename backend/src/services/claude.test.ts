@@ -33,6 +33,28 @@ function fakeClientRejecting(error: unknown) {
 }
 
 describe('createCodeOptimizer', () => {
+  it('sends a 32000-token request through the real SDK without the implicit timeout guard rejecting it', async () => {
+    const transport = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(JSON.stringify({
+        id: 'msg_test',
+        type: 'message',
+        role: 'assistant',
+        model: config.model,
+        content: [{ type: 'text', text: JSON.stringify(result) }],
+        stop_reason: 'end_turn',
+        stop_sequence: null,
+        usage: { input_tokens: 10, output_tokens: 20 },
+      }), { headers: { 'Content-Type': 'application/json' } }),
+    );
+    const client = new Anthropic({ apiKey: 'sk-test', fetch: transport });
+
+    await expect(createCodeOptimizer(config, client).optimize('typescript', 'const x=1'))
+      .resolves.toEqual(result);
+    expect(transport).toHaveBeenCalledTimes(1);
+    const body = JSON.parse(transport.mock.calls[0]![1]!.body as string);
+    expect(body.max_tokens).toBe(32_000);
+  });
+
   it('returns the parsed output on success', async () => {
     const { client } = fakeClient({ stop_reason: 'end_turn', parsed_output: result });
     const optimizer = createCodeOptimizer(config, client);

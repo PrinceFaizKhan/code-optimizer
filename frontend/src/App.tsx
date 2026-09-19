@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MAX_CODE_CHARS, type Language } from '@code-optimizer/shared';
 import CodeInput from './components/CodeInput';
-import DiffView from './components/DiffView';
+import ResultsPanel from './components/ResultsPanel';
 import ErrorBanner from './components/ErrorBanner';
 import LanguageSelect from './components/LanguageSelect';
 import OptimizeButton from './components/OptimizeButton';
@@ -49,7 +49,7 @@ export default function App() {
           />
         </div>
 
-        {result && <DiffView original={code} optimized={result.optimized_code} language={language} />}
+        {result && <ResultsPanel result={result} original={code} language={language} actions={null} />}
       </main>
     </div>
   );
